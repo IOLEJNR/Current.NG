@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="A practical power-planning dashboard for Nigerian homes and small businesses."
+    >
+    <meta name="theme-color" content="#f5f4ed">
+    <title>Current.NG — Power Status</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    >
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    >
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Ikeja Electric home">
+          <span class="brand-mark" aria-hidden="true">⚡</span>
+          <span>Current.NG</span>
+        </a>
+        <nav class="top-nav" aria-label="Main navigation">
+          <a class="nav-link active" href="#overview">Power Status</a>
+          <a class="nav-link" href="#community">Reported Outages</a>
+          <a class="nav-link" href="#planner">Fault Reporting</a>
+        </nav>
+        <button class="location-button" type="button">
+          <span class="location-dot" aria-hidden="true"></span>
+          Lagos, NG
+          <span class="chevron" aria-hidden="true">⌄</span>
+        </button>
+      </header>
+
+      <main id="overview">
+        <section class="intro-row">
+          <div>
+            <p class="eyebrow">OFFICIAL SERVICE UPDATE</p>
+            <h1>Power status<br class="mobile-break"> for your area.</h1>
+            <p class="intro-copy">
+              Check reported outages, see possible restoration times, and
+              tell Current.NG about a fault near you.
+            </p>
+          </div>
+          <div class="intro-note">
+            <span class="note-icon" aria-hidden="true">✳</span>
+            <p>
+              <strong>Plan with your people.</strong>
+              Local reports help everyone prepare, not just react.
+            </p>
+          </div>
+        </section>
+
+        <section class="dashboard-grid" aria-label="Power overview">
+          <div class="main-column">
+            <article class="status-card">
+              <div class="status-topline">
+                <span class="live-label">
+                  <span class="live-dot" aria-hidden="true"></span>
+                  LIVE POWER STATUS
+                </span>
+                <span class="sample-label">COMMUNITY REPORTS · DEMO</span>
+              </div>
+              <div class="status-content">
+                <div>
+                  <p class="status-kicker">Ikeja GRA · Current.NG</p>
+                  <h2>Grid is off<span class="status-period">.</span></h2>
+                  <p class="status-duration">Last reported 1 hr 18 min ago</p>
+                  <p class="status-detail"><strong>Possible reason:</strong> Faulty feeder equipment</p>
+                  <p class="status-detail"><strong>Estimated restoration:</strong> 6:30 PM today</p>
+                </div>
+                <div class="status-illustration" aria-hidden="true">
+                  <span class="sun-disc"></span>
+                  <span class="signal signal-one"></span>
+                  <span class="signal signal-two"></span>
+                  <span class="signal signal-three"></span>
+                  <span class="signal-core">↯</span>
+                </div>
+              </div>
+              <div class="status-footer">
+                <div class="confidence">
+                  <span class="confidence-icon" aria-hidden="true">◎</span>
+                  <span><strong>4 nearby reports</strong> in the last 2 hours</span>
+                </div>
+                <span class="estimate-note">No verified restoration estimate</span>
+              </div>
+            </article>
+
+            <section class="community-section" id="community">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">FROM YOUR AREA</p>
+                  <h2>What's happening nearby?</h2>
+                </div>
+                <button class="text-button" type="button" id="report-button">
+                  <span aria-hidden="true">＋</span> Log an outage
+                </button>
+              </div>
+              <div class="area-list">
+                <article class="area-card">
+                  <div class="area-icon outage-icon" aria-hidden="true">↯</div>
+                  <div class="area-info">
+                    <h3>Opebi Road</h3>
+                    <p>Power off <span>·</span> reported 14 min ago</p>
+                    <p class="area-reason">Reason: Maintenance work</p>
+                    <p class="area-eta">Restored by 5:30 PM</p>
+                  </div>
+                  <span class="area-status off-status">OFF</span>
+                </article>
+                <article class="area-card">
+                  <div class="area-icon on-icon" aria-hidden="true">✳</div>
+                  <div class="area-info">
+                    <h3>Allen Avenue</h3>
+                    <p>Power on <span>·</span> reported 32 min ago</p>
+                    <p class="area-reason">Service restored</p>
+                    <p class="area-eta">Stable supply</p>
+                  </div>
+                  <span class="area-status on-status">ON</span>
+                </article>
+                <article class="area-card">
+                  <div class="area-icon outage-icon" aria-hidden="true">↯</div>
+                  <div class="area-info">
+                    <h3>Ogba Estate</h3>
+                    <p>Power off <span>·</span> reported 51 min ago</p>
+                    <p class="area-reason">Reason: Transformer fault</p>
+                    <p class="area-eta">Restored by 7:00 PM</p>
+                  </div>
+                  <span class="area-status off-status">OFF</span>
+                </article>
+              </div>
+              <p class="demo-disclaimer">
+                Sample neighbourhood activity. Reports are community submitted,
+                not official utility updates.
+              </p>
+            </section>
+
+            <section class="prep-card">
+              <div class="prep-icon" aria-hidden="true">✦</div>
+              <div class="prep-copy">
+                <p class="eyebrow">A SMALL PLAN GOES A LONG WAY</p>
+                <h2>Save your backup for what matters.</h2>
+                <p>
+                  Charge your phone and power bank first. Keep cold-room doors
+                  shut, and switch off appliances before power returns.
+                </p>
+              </div>
+              <span class="prep-spark" aria-hidden="true">✳</span>
+            </section>
+          </div>
+
+          <aside class="side-column" id="planner">
+            <article class="planner-card">
+              <div class="planner-heading">
+                <div class="planner-icon" aria-hidden="true">₦</div>
+                <span class="eyebrow">YOUR BACKUP PLAN</span>
+              </div>
+              <h2>What could your generator cost?</h2>
+              <p class="planner-description">
+                A rough monthly estimate, so fuel spend doesn't catch you off guard.
+              </p>
+
+              <label class="input-label" for="hours-input">
+                Generator hours per day
+                <span class="input-value"><span id="hours-value">4</span> hrs</span>
+              </label>
+              <input
+                id="hours-input"
+                class="hours-slider"
+                type="range"
+                min="0"
+                max="12"
+                value="4"
+                step="1"
+              >
+              <div class="range-scale">
+                <span>0 hrs</span>
+                <span>12 hrs</span>
+              </div>
+
+              <label class="input-label fuel-label" for="price-input">
+                Petrol price per litre
+                <span class="naira-input">
+                  <span aria-hidden="true">₦</span>
+                  <input
+                    id="price-input"
+                    type="number"
+                    min="0"
+                    max="10000"
+                    value="950"
+                    inputmode="numeric"
+                    aria-label="Petrol price per litre in naira"
+                  >
+                </span>
+              </label>
+
+              <div class="estimate-box" aria-live="polite">
+                <span>ESTIMATED MONTHLY FUEL</span>
+                <strong id="monthly-cost">₦91,200</strong>
+                <small>Based on 0.8 L/hr · 30 days</small>
+              </div>
+              <p class="planner-footnote">
+                Your actual use will vary by generator size and load.
+              </p>
+            </article>
+
+            <article class="tip-card">
+              <span class="tip-label">THE CURRENT TIP <span>· 01</span></span>
+              <p>
+                Unplug sensitive electronics during a changeover. A voltage
+                stabiliser can help protect them when supply returns.
+              </p>
+              <span class="tip-decoration" aria-hidden="true">↗</span>
+            </article>
+
+            <div class="trust-note">
+              <span aria-hidden="true">◉</span>
+              <p>
+                <strong>Built for real life.</strong>
+                No live grid access required. Your plan stays on this device.
+              </p>
+            </div>
+          </aside>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <a class="brand footer-brand" href="#">
+          <span class="brand-mark" aria-hidden="true">⚡</span>
+          <span>Current.NG</span>
+        </a>
+        <p>Less guessing. More getting on with it.</p>
+        <span class="footer-region">MADE FOR NIGERIA <span>✳</span></span>
+      </footer>
+    </div>
+
+    <div class="outage-modal" id="outage-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-box">
+        <button class="modal-close" id="modal-close" type="button" aria-label="Close outage form">×</button>
+        <p class="eyebrow">REPORT AN OUTAGE</p>
+        <h2 id="modal-title">Tell us where power is out</h2>
+        <form id="outage-form">
+          <label for="outage-location">Current location</label>
+          <input id="outage-location" type="text" placeholder="Example: 12 Allen Avenue, Ikeja" required>
+
+          <label for="outage-time">How long has it been out?</label>
+          <select id="outage-time" required>
+            <option value="">Choose an option</option>
+            <option>Less than 30 minutes</option>
+            <option>30 minutes to 1 hour</option>
+            <option>1 to 3 hours</option>
+            <option>More than 3 hours</option>
+          </select>
+
+          <button class="submit-button" type="submit">Submit outage report</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
