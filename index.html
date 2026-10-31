@@ -8,6 +8,11 @@
       content="A practical power-planning dashboard for Nigerian homes and small businesses."
     >
     <meta name="theme-color" content="#f5f4ed">
+    <script>
+      if (sessionStorage.getItem("currentNgAccess") !== "granted") {
+        window.location.replace("login.html");
+      }
+    </script>
     <title>Current.NG — Power Status</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,10 +38,11 @@
           <a class="nav-link active" href="#overview">Power Status</a>
           <a class="nav-link" href="#community">Reported Outages</a>
           <a class="nav-link" href="#planner">Fault Reporting</a>
+          <a class="nav-link" href="#about">About Current.NG</a>
         </nav>
-        <button class="location-button" type="button">
+        <button class="location-button" type="button" id="provider-button">
           <span class="location-dot" aria-hidden="true"></span>
-          Lagos, NG
+          <span class="provider-text">Lagos, NG</span>
           <span class="chevron" aria-hidden="true">⌄</span>
         </button>
       </header>
@@ -229,6 +235,20 @@
               </p>
             </div>
           </aside>
+        </section>
+
+        <section class="about-section" id="about">
+          <p class="eyebrow">ABOUT CURRENT.NG</p>
+          <h2>One clear view of power across Nigeria.</h2>
+          <p class="about-intro">Current.NG helps homes, businesses, communities, and electricity providers plan around unstable power with timely reports and practical tools.</p>
+          <div class="feature-grid">
+            <article><span>01</span><h3>Local power status</h3><p>Check community-reported supply status and possible restoration information for nearby neighbourhoods.</p></article>
+            <article><span>02</span><h3>Provider connection</h3><p>With location permission, users can be matched to a Nigerian electricity distribution company covering their area.</p></article>
+            <article><span>03</span><h3>Approved outage reports</h3><p>Residents submit complaints, while authorised admins review them before approved updates reach the main screen.</p></article>
+            <article><span>04</span><h3>Generator planning</h3><p>Estimate daily generator hours and monthly fuel spend using adjustable usage and fuel-cost inputs.</p></article>
+            <article><span>05</span><h3>Fault reporting</h3><p>Log an outage location and duration so it can be reviewed, approved, rejected, or removed by administrators.</p></article>
+            <article><span>06</span><h3>Safety and preparation</h3><p>Receive rotating practical tips for protecting devices, managing backup power, and staying ready.</p></article>
+          </div>
         </section>
       </main>
 

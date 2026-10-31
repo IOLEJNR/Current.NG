@@ -958,6 +958,18 @@ h1 {
   transform: translateY(0);
 }
 
+/* Current.NG about and responsive feature section */
+.about-section { grid-column: 1 / -1; margin-top: 4px; padding: 34px; border: 1px solid #e1e2d8; border-radius: 11px; background: #fbfaf6; }
+.about-section h2 { max-width: 620px; margin: 9px 0 8px; font-family: "Space Grotesk",sans-serif; font-size: 30px; letter-spacing:-1px; }
+.about-intro { max-width: 730px; margin-bottom: 22px; color:#737b72; font-size:12px; line-height:1.7; }
+.feature-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+.feature-grid article { min-height:150px; padding:16px; border-radius:8px; background:#f1f3e9; }
+.feature-grid article > span { color:#8a9b81; font-size:8px; font-weight:700; letter-spacing:1px; }
+.feature-grid h3 { margin:20px 0 7px; color:#294b33; font-family:"Space Grotesk",sans-serif; font-size:15px; }
+.feature-grid p { margin:0; color:#737b72; font-size:10px; line-height:1.65; }
+.location-button { max-width:210px; }
+.location-button .provider-text { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
 @media (max-width: 920px) {
   .page-shell {
     width: min(100% - 44px, 760px);
@@ -1136,6 +1148,19 @@ h1 {
   .footer > p {
     display: none;
   }
+  .about-section { padding:24px 18px; }
+  .about-section h2 { font-size:26px; }
+  .feature-grid { grid-template-columns:1fr 1fr; }
+  .feature-grid article { min-height:140px; }
+  .location-button { max-width:150px; }
+}
+
+@media (max-width: 500px) {
+  .feature-grid { grid-template-columns:1fr; }
+  .feature-grid article { min-height:0; }
+  .topbar { flex-wrap:wrap; padding:12px 0; row-gap:10px; }
+  .top-nav { order:3; width:100%; display:flex; overflow-x:auto; gap:18px; padding:3px 0 0; }
+  .nav-link { flex:0 0 auto; }
 }
 
 @media (max-width: 380px) {
