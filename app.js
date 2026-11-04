@@ -1,3 +1,4 @@
+/* Storage section: safely reads local JSON without breaking the static demo on corrupt data */
 function readStorage(key, fallback) {
   try { return JSON.parse(localStorage.getItem(key)) ?? fallback; }
   catch { return fallback; }
@@ -43,6 +44,7 @@ function showToast(message) {
 
 hoursInput.addEventListener("input", updateEstimate);
 priceInput.addEventListener("input", updateEstimate);
+/* Outage dialog section: opens, closes, and submits community fault reports */
 reportButton.addEventListener("click", () => {
   outageModal.classList.add("visible");
 });
@@ -88,7 +90,7 @@ function renderApprovedComplaints() {
     const card = document.createElement("article");
     card.className = "area-card approved-complaint";
     card.innerHTML = `
-      <div class="area-icon outage-icon" aria-hidden="true">↯</div>
+      <div class="area-icon outage-icon" aria-hidden="true"><i class="bx bx-power-off bx-tada"></i></div>
       <div class="area-info">
         <h3>${report.location.replace(/[<>&]/g, (char) => ({"<":"&lt;",">":"&gt;","&":"&amp;"}[char]))}</h3>
         <p>Power off · community report</p>
@@ -117,9 +119,75 @@ const randomTip = currentTips[Math.floor(Math.random() * currentTips.length)];
 if (tipText) tipText.textContent = randomTip;
 if (tipLabel) tipLabel.textContent = "· " + String(currentTips.indexOf(randomTip) + 1).padStart(2, "0");
 
-const savedLocation = readStorage("currentNgLocation", null);
-const providerText = document.querySelector("#provider-button .provider-text");
-if (savedLocation && providerText) {
-  providerText.textContent = savedLocation.area === "Lagos" ? "Ikeja Electric" : savedLocation.provider;
-  providerText.title = savedLocation.provider;
+/* Live-location section: displays the resolved place and refreshes provider matching from device coordinates */
+async function reverseGeocode(latitude, longitude) {
+  const response = await fetch(
+    `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`,
+  );
+  if (!response.ok) throw new Error("Reverse geocoding unavailable");
+  return response.json();
 }
+
+function providerFromPlace(place) {
+  const state = (place.principalSubdivision || place.state || "").toLowerCase();
+  const locality = (place.locality || place.city || "").toLowerCase();
+  const ekoAreas = ["lagos island","victoria island","lekki","ikoyi","ajah","apapa","surulere","festac","amuwo odofin","badagry","ojo"];
+  if (state.includes("lagos") && ekoAreas.some((name) => locality.includes(name))) return "Eko Electricity Distribution Company (EKEDC)";
+  const providerMap = {
+    lagos: "Ikeja Electric (IKEDC)", abuja: "Abuja Electricity Distribution Company (AEDC)", "federal capital territory": "Abuja Electricity Distribution Company (AEDC)",
+    nasarawa: "Abuja Electricity Distribution Company (AEDC)", niger: "Abuja Electricity Distribution Company (AEDC)", kogi: "Abuja Electricity Distribution Company (AEDC)",
+    rivers: "Port Harcourt Electricity Distribution (PHED)", "cross river": "Port Harcourt Electricity Distribution (PHED)", "akwa ibom": "Port Harcourt Electricity Distribution (PHED)", bayelsa: "Port Harcourt Electricity Distribution (PHED)",
+    enugu: "Enugu Electricity Distribution (EEDC)", abia: "Enugu Electricity Distribution (EEDC)", anambra: "Enugu Electricity Distribution (EEDC)", ebonyi: "Enugu Electricity Distribution (EEDC)", imo: "Enugu Electricity Distribution (EEDC)",
+    kano: "Kano Electricity Distribution (KEDCO)", jigawa: "Kano Electricity Distribution (KEDCO)",
+    edo: "Benin Electricity Distribution Company (BEDC)", delta: "Benin Electricity Distribution Company (BEDC)", ekiti: "Benin Electricity Distribution Company (BEDC)", ondo: "Benin Electricity Distribution Company (BEDC)",
+    oyo: "Ibadan Electricity Distribution Company (IBEDC)", ogun: "Ibadan Electricity Distribution Company (IBEDC)", osun: "Ibadan Electricity Distribution Company (IBEDC)", kwara: "Ibadan Electricity Distribution Company (IBEDC)",
+    kaduna: "Kaduna Electric (KAEDCO)", kebbi: "Kaduna Electric (KAEDCO)", sokoto: "Kaduna Electric (KAEDCO)", zamfara: "Kaduna Electric (KAEDCO)",
+    plateau: "Jos Electricity Distribution (JED)", bauchi: "Jos Electricity Distribution (JED)", gombe: "Jos Electricity Distribution (JED)", benue: "Jos Electricity Distribution (JED)",
+    adamawa: "Yola Electricity Distribution Company (YEDC)", borno: "Yola Electricity Distribution Company (YEDC)", taraba: "Yola Electricity Distribution Company (YEDC)", yobe: "Yola Electricity Distribution Company (YEDC)",
+  };
+  return providerMap[state] || "Provider confirmation needed — verify your service address";
+}
+
+function renderLiveLocation(location) {
+  const providerText = document.querySelector("#provider-button .provider-text");
+  const statusKicker = document.querySelector(".status-kicker");
+  const placeName = location.locality || location.area || "Your area";
+  const providerName = location.provider || "Nigerian Electricity Distribution Network";
+  if (providerText) {
+    providerText.textContent = `${placeName}, ${location.state || location.area || "NG"}`;
+    providerText.title = providerName;
+  }
+  if (statusKicker) statusKicker.textContent = `${placeName} · ${providerName}`;
+}
+
+async function refreshLiveLocation() {
+  if (!navigator.geolocation) return;
+  navigator.geolocation.getCurrentPosition(async ({ coords }) => {
+    try {
+      const place = await reverseGeocode(coords.latitude, coords.longitude);
+      const location = {
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+        accuracy: coords.accuracy,
+        locality: place.locality || place.city || place.principalSubdivision || "Your area",
+        state: place.principalSubdivision || place.city || "",
+        area: place.city || place.locality || place.principalSubdivision || "Nigeria",
+        provider: providerFromPlace(place),
+        matchedAt: new Date().toISOString(),
+      };
+      localStorage.setItem("currentNgLocation", JSON.stringify(location));
+      renderLiveLocation(location);
+      showToast(`Location updated: ${location.locality} · ${location.provider}`);
+    } catch {
+      const saved = readStorage("currentNgLocation", null);
+      if (saved) renderLiveLocation(saved);
+      showToast("Place lookup is unavailable. Your saved location is still in use.");
+    }
+  }, () => showToast("Location permission was not granted."), {
+    enableHighAccuracy: true, timeout: 10000, maximumAge: 300000,
+  });
+}
+
+const savedLocation = readStorage("currentNgLocation", null);
+if (savedLocation) renderLiveLocation(savedLocation);
+document.querySelector("#provider-button")?.addEventListener("click", refreshLiveLocation);

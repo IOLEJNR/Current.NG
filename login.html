@@ -1,10 +1,12 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#145da0">
     <title>Sign in — Current.NG</title>
+    <!-- Boxicons supplies lightweight interface and animated status icons -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -74,10 +76,11 @@
     </style>
   </head>
   <body>
+    <!-- Authentication and live location section -->
     <main class="login-shell">
       <section class="welcome-panel" aria-label="Welcome to Current.NG">
-        <a class="brand" href="login.html"><span class="brand-mark">⚡</span><span>Current.NG</span></a>
-        <div class="orbit" aria-hidden="true"></div><div class="bolt" aria-hidden="true">↯</div>
+        <a class="brand" href="login.html"><span class="brand-mark"><i class="bx bx-bolt-circle bx-tada"></i></span><span>Current.NG</span></a>
+        <div class="orbit" aria-hidden="true"></div><div class="bolt" aria-hidden="true"><i class="bx bx-power-off bx-flashing"></i></div>
         <div class="welcome-content">
           <p class="eyebrow">POWER AWARENESS FOR EVERYDAY LIFE</p>
           <h1>Know before<br>the lights go <span>off.</span></h1>
@@ -102,7 +105,7 @@
           </form>
           <p class="signup-link" id="signup-link">New to Current.NG? <button id="signup-toggle" type="button">Create an account</button></p>
           <div class="divider"></div>
-          <a class="admin-link" href="#" id="admin-login"><span aria-hidden="true">◈</span> Admin login</a>
+          <a class="admin-link" href="#" id="admin-login"><span aria-hidden="true"><i class="bx bxs-user-detail bx-tada"></i></span> Admin login</a>
         </div>
         <p class="form-footer">Current.NG · Less guessing. More getting on with it.</p>
       </section>
@@ -170,13 +173,74 @@
         password.type = visible ? "password" : "text";
         showPassword.textContent = visible ? "Show" : "Hide";
       });
-      function getProvider(latitude, longitude) {
-        if (latitude >= 6.30 && latitude <= 6.70 && longitude >= 3.15 && longitude <= 3.40) return { name: "Ikeja Electric (IKEDC)", area: "Lagos" };
-        if (latitude >= 8.90 && latitude <= 9.30 && longitude >= 7.25 && longitude <= 7.65) return { name: "Abuja Electricity Distribution Company (AEDC)", area: "FCT Abuja" };
-        if (latitude >= 4.70 && latitude <= 4.95 && longitude >= 6.90 && longitude <= 7.20) return { name: "Port Harcourt Electricity Distribution (PHED)", area: "Rivers" };
-        if (latitude >= 6.20 && latitude <= 6.65 && longitude >= 7.25 && longitude <= 7.65) return { name: "Enugu Electricity Distribution (EEDC)", area: "Enugu" };
-        if (latitude >= 10.90 && latitude <= 12.20 && longitude >= 8.40 && longitude <= 8.70) return { name: "Kano Electricity Distribution (KEDCO)", area: "Kano" };
-        return { name: "Nigerian Electricity Distribution Network", area: "Nigeria" };
+      /* Location section: reverse-geocode the live browser position, then match the
+         resolved Nigerian state/locality to the applicable electricity disco.
+         Coverage boundaries remain utility-franchise guidance, not a public guarantee. */
+      async function getLivePlace(latitude, longitude) {
+        const response = await fetch(
+          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${encodeURIComponent(latitude)}&longitude=${encodeURIComponent(longitude)}&localityLanguage=en`,
+          { headers: { Accept: "application/json" } },
+        );
+        if (!response.ok) throw new Error("Reverse geocoding unavailable");
+        const place = await response.json();
+        return {
+          locality: place.locality || place.city || place.principalSubdivision || "Nigeria",
+          area: place.city || place.locality || place.principalSubdivision || "Nigeria",
+          state: place.principalSubdivision || "",
+          countryCode: place.countryCode || "NG",
+        };
+      }
+
+      function getProvider(place) {
+        const state = (place.state || "").toLowerCase();
+        const locality = (place.locality || "").toLowerCase();
+        const ekoAreas = ["lagos island","victoria island","lekki","ikoyi","ajah","apapa","surulere","festac","amuwo odofin","badagry","ojo"];
+        if (state.includes("lagos") && ekoAreas.some((name) => locality.includes(name))) {
+          return { name: "Eko Electricity Distribution Company (EKEDC)", area: place.area };
+        }
+        const providersByState = {
+          lagos: ["Ikeja Electric (IKEDC)","Lagos"],
+          abuja: ["Abuja Electricity Distribution Company (AEDC)","FCT Abuja"],
+          "federal capital territory": ["Abuja Electricity Distribution Company (AEDC)","FCT Abuja"],
+          nasarawa: ["Abuja Electricity Distribution Company (AEDC)","Nasarawa"],
+          niger: ["Abuja Electricity Distribution Company (AEDC)","Niger"],
+          kogi: ["Abuja Electricity Distribution Company (AEDC)","Kogi"],
+          rivers: ["Port Harcourt Electricity Distribution (PHED)","Rivers"],
+          "cross river": ["Port Harcourt Electricity Distribution (PHED)","Cross River"],
+          "akwa ibom": ["Port Harcourt Electricity Distribution (PHED)","Akwa Ibom"],
+          bayelsa: ["Port Harcourt Electricity Distribution (PHED)","Bayelsa"],
+          enugu: ["Enugu Electricity Distribution (EEDC)","Enugu"],
+          abia: ["Enugu Electricity Distribution (EEDC)","Abia"],
+          anambra: ["Enugu Electricity Distribution (EEDC)","Anambra"],
+          ebonyi: ["Enugu Electricity Distribution (EEDC)","Ebonyi"],
+          imo: ["Enugu Electricity Distribution (EEDC)","Imo"],
+          kano: ["Kano Electricity Distribution (KEDCO)","Kano"],
+          jigawa: ["Kano Electricity Distribution (KEDCO)","Jigawa"],
+          edo: ["Benin Electricity Distribution Company (BEDC)","Edo"],
+          delta: ["Benin Electricity Distribution Company (BEDC)","Delta"],
+          ekiti: ["Benin Electricity Distribution Company (BEDC)","Ekiti"],
+          ondó: ["Benin Electricity Distribution Company (BEDC)","Ondo"],
+          oyo: ["Ibadan Electricity Distribution Company (IBEDC)","Oyo"],
+          ogun: ["Ibadan Electricity Distribution Company (IBEDC)","Ogun"],
+          osun: ["Ibadan Electricity Distribution Company (IBEDC)","Osun"],
+          kwara: ["Ibadan Electricity Distribution Company (IBEDC)","Kwara"],
+          kaduna: ["Kaduna Electric (KAEDCO)","Kaduna"],
+          kebbi: ["Kaduna Electric (KAEDCO)","Kebbi"],
+          sokoto: ["Kaduna Electric (KAEDCO)","Sokoto"],
+          zamfara: ["Kaduna Electric (KAEDCO)","Zamfara"],
+          plateau: ["Jos Electricity Distribution (JED)","Plateau"],
+          bauchi: ["Jos Electricity Distribution (JED)","Bauchi"],
+          gombe: ["Jos Electricity Distribution (JED)","Gombe"],
+          benue: ["Jos Electricity Distribution (JED)","Benue"],
+          adamawa: ["Yola Electricity Distribution Company (YEDC)","Adamawa"],
+          borno: ["Yola Electricity Distribution Company (YEDC)","Borno"],
+          taraba: ["Yola Electricity Distribution Company (YEDC)","Taraba"],
+          yobe: ["Yola Electricity Distribution Company (YEDC)","Yobe"],
+        };
+        const match = providersByState[state];
+        return match
+          ? { name: match[0], area: match[1] }
+          : { name: "Provider confirmation needed — verify your service address", area: place.state || place.area || "Nigeria" };
       }
 
       function requestLocationThenRedirect(destination) {
@@ -188,11 +252,20 @@
           return;
         }
         status.innerHTML = "Requesting your location permission…";
-        navigator.geolocation.getCurrentPosition((position) => {
+        navigator.geolocation.getCurrentPosition(async (position) => {
           const { latitude, longitude, accuracy } = position.coords;
-          const provider = getProvider(latitude, longitude);
-          localStorage.setItem("currentNgLocation", JSON.stringify({ latitude, longitude, accuracy, provider: provider.name, area: provider.area }));
-          status.innerHTML = "Location accepted · <strong>" + provider.name + "</strong>";
+          let place = { locality: "Nigeria", area: "Nigeria", state: "", countryCode: "NG" };
+          try { place = await getLivePlace(latitude, longitude); } catch (error) {
+            status.textContent = "Coordinates accepted; place-name lookup is temporarily unavailable.";
+          }
+          const provider = getProvider(place);
+          localStorage.setItem("currentNgLocation", JSON.stringify({
+            latitude, longitude, accuracy, provider: provider.name, area: provider.area,
+            locality: place.locality, state: place.state, countryCode: place.countryCode,
+            matchedAt: new Date().toISOString(),
+          }));
+          status.innerHTML = "Location: " + escapeHtml(place.locality + ", " + place.state) +
+            " · Provider: <strong>" + escapeHtml(provider.name) + "</strong>";
           window.setTimeout(() => { window.location.href = destination; }, 900);
         }, () => {
           status.textContent = "Location permission was declined. You can continue and update this later.";

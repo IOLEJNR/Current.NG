@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+  <!-- Page metadata, typography, shared styling, and interactive script setup -->
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,14 +25,16 @@
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap"
       rel="stylesheet"
     >
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="app.js" defer></script>
   </head>
   <body>
     <div class="page-shell">
+      <!-- Primary navigation section: brand, page links, and live location/provider control -->
       <header class="topbar">
         <a class="brand" href="#" aria-label="Ikeja Electric home">
-          <span class="brand-mark" aria-hidden="true">⚡</span>
+          <span class="brand-mark" aria-hidden="true"><i class="bx bx-bolt-circle bx-tada"></i></span>
           <span>Current.NG</span>
         </a>
         <nav class="top-nav" aria-label="Main navigation">
@@ -41,13 +44,14 @@
           <a class="nav-link" href="#about">About Current.NG</a>
         </nav>
         <button class="location-button" type="button" id="provider-button">
-          <span class="location-dot" aria-hidden="true"></span>
+          <i class="bx bxs-map location-dot" aria-hidden="true"></i>
           <span class="provider-text">Lagos, NG</span>
-          <span class="chevron" aria-hidden="true">⌄</span>
+          <i class="bx bx-chevron-down chevron" aria-hidden="true"></i>
         </button>
       </header>
 
       <main id="overview">
+        <!-- Introduction section: explains the purpose of the power-status dashboard -->
         <section class="intro-row">
           <div>
             <p class="eyebrow">OFFICIAL SERVICE UPDATE</p>
@@ -58,7 +62,7 @@
             </p>
           </div>
           <div class="intro-note">
-            <span class="note-icon" aria-hidden="true">✳</span>
+            <span class="note-icon" aria-hidden="true"><i class="bx bx-group bx-tada"></i></span>
             <p>
               <strong>Plan with your people.</strong>
               Local reports help everyone prepare, not just react.
@@ -66,6 +70,7 @@
           </div>
         </section>
 
+        <!-- Live status dashboard section: current-grid information and surrounding community reports -->
         <section class="dashboard-grid" aria-label="Power overview">
           <div class="main-column">
             <article class="status-card">
@@ -89,12 +94,12 @@
                   <span class="signal signal-one"></span>
                   <span class="signal signal-two"></span>
                   <span class="signal signal-three"></span>
-                  <span class="signal-core">↯</span>
+                  <span class="signal-core"><i class="bx bx-pulse bx-flashing"></i></span>
                 </div>
               </div>
               <div class="status-footer">
                 <div class="confidence">
-                  <span class="confidence-icon" aria-hidden="true">◎</span>
+                  <span class="confidence-icon" aria-hidden="true"><i class="bx bx-target-lock bx-tada"></i></span>
                   <span><strong>4 nearby reports</strong> in the last 2 hours</span>
                 </div>
                 <span class="estimate-note">No verified restoration estimate</span>
@@ -108,12 +113,12 @@
                   <h2>What's happening nearby?</h2>
                 </div>
                 <button class="text-button" type="button" id="report-button">
-                  <span aria-hidden="true">＋</span> Log an outage
+                  <span aria-hidden="true"><i class="bx bx-plus-circle"></i></span> Log an outage
                 </button>
               </div>
               <div class="area-list">
                 <article class="area-card">
-                  <div class="area-icon outage-icon" aria-hidden="true">↯</div>
+                  <div class="area-icon outage-icon" aria-hidden="true"><i class="bx bx-power-off bx-tada"></i></div>
                   <div class="area-info">
                     <h3>Opebi Road</h3>
                     <p>Power off <span>·</span> reported 14 min ago</p>
@@ -123,7 +128,7 @@
                   <span class="area-status off-status">OFF</span>
                 </article>
                 <article class="area-card">
-                  <div class="area-icon on-icon" aria-hidden="true">✳</div>
+                  <div class="area-icon on-icon" aria-hidden="true"><i class="bx bx-check-circle bx-tada"></i></div>
                   <div class="area-info">
                     <h3>Allen Avenue</h3>
                     <p>Power on <span>·</span> reported 32 min ago</p>
@@ -133,7 +138,7 @@
                   <span class="area-status on-status">ON</span>
                 </article>
                 <article class="area-card">
-                  <div class="area-icon outage-icon" aria-hidden="true">↯</div>
+                  <div class="area-icon outage-icon" aria-hidden="true"><i class="bx bx-power-off bx-tada"></i></div>
                   <div class="area-info">
                     <h3>Ogba Estate</h3>
                     <p>Power off <span>·</span> reported 51 min ago</p>
@@ -150,7 +155,7 @@
             </section>
 
             <section class="prep-card">
-              <div class="prep-icon" aria-hidden="true">✦</div>
+              <div class="prep-icon" aria-hidden="true"><i class="bx bx-bulb bx-tada"></i></div>
               <div class="prep-copy">
                 <p class="eyebrow">A SMALL PLAN GOES A LONG WAY</p>
                 <h2>Save your backup for what matters.</h2>
@@ -159,14 +164,15 @@
                   shut, and switch off appliances before power returns.
                 </p>
               </div>
-              <span class="prep-spark" aria-hidden="true">✳</span>
+              <span class="prep-spark" aria-hidden="true"><i class="bx bx-sparkles bx-spin"></i></span>
             </section>
           </div>
 
           <aside class="side-column" id="planner">
             <article class="planner-card">
               <div class="planner-heading">
-                <div class="planner-icon" aria-hidden="true">₦</div>
+                <!-- Generator calculator section: daily generator hours, fuel price, and monthly estimate -->
+                <div class="planner-icon" aria-hidden="true"><i class="bx bx-calculator"></i></div>
                 <span class="eyebrow">YOUR BACKUP PLAN</span>
               </div>
               <h2>What could your generator cost?</h2>
@@ -195,7 +201,7 @@
               <label class="input-label fuel-label" for="price-input">
                 Petrol price per litre
                 <span class="naira-input">
-                  <span aria-hidden="true">₦</span>
+                  <span aria-hidden="true"><i class="bx bx-money"></i></span>
                   <input
                     id="price-input"
                     type="number"
@@ -224,11 +230,11 @@
                 Unplug sensitive electronics during a changeover. A voltage
                 stabiliser can help protect them when supply returns.
               </p>
-              <span class="tip-decoration" aria-hidden="true">↗</span>
+              <span class="tip-decoration" aria-hidden="true"><i class="bx bx-right-top-arrow-circle bx-tada"></i></span>
             </article>
 
             <div class="trust-note">
-              <span aria-hidden="true">◉</span>
+              <span aria-hidden="true"><i class="bx bx-shield-quarter bx-tada"></i></span>
               <p>
                 <strong>Built for real life.</strong>
                 No live grid access required. Your plan stays on this device.
@@ -237,6 +243,7 @@
           </aside>
         </section>
 
+        <!-- About section: summarizes the six core services offered by Current.NG -->
         <section class="about-section" id="about">
           <p class="eyebrow">ABOUT CURRENT.NG</p>
           <h2>One clear view of power across Nigeria.</h2>
@@ -252,19 +259,21 @@
         </section>
       </main>
 
+      <!-- Footer section: brand identity, project statement, and Nigeria region label -->
       <footer class="footer">
         <a class="brand footer-brand" href="#">
-          <span class="brand-mark" aria-hidden="true">⚡</span>
+          <span class="brand-mark" aria-hidden="true"><i class="bx bx-bolt-circle bx-tada"></i></span>
           <span>Current.NG</span>
         </a>
         <p>Less guessing. More getting on with it.</p>
-        <span class="footer-region">MADE FOR NIGERIA <span>✳</span></span>
+        <span class="footer-region">MADE FOR NIGERIA <span><i class="bx bx-world bx-spin"></i></span></span>
       </footer>
     </div>
 
+    <!-- Outage-report modal: collects an address and outage duration from the user -->
     <div class="outage-modal" id="outage-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <div class="modal-box">
-        <button class="modal-close" id="modal-close" type="button" aria-label="Close outage form">×</button>
+        <button class="modal-close" id="modal-close" type="button" aria-label="Close outage form"><i class="bx bx-x"></i></button>
         <p class="eyebrow">REPORT AN OUTAGE</p>
         <h2 id="modal-title">Tell us where power is out</h2>
         <form id="outage-form">
@@ -285,6 +294,8 @@
       </div>
     </div>
 
+    <!-- Status-toast region: briefly confirms successful user actions -->
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <!-- Current.NG: shows location-aware Nigerian power reports, provider matching, and backup planning. -->
   </body>
 </html>

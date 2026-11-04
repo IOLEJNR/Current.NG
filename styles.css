@@ -2,6 +2,7 @@
   box-sizing: border-box;
 }
 
+/* Global page styles: typography, links, colors, and page shell */
 html {
   scroll-behavior: smooth;
 }
@@ -33,6 +34,7 @@ a {
   margin: 0 auto;
 }
 
+/* Header section: brand, navigation links, live place, and provider button */
 .topbar {
   min-height: 84px;
   display: flex;
@@ -60,6 +62,11 @@ a {
   background: #145da0;
   color: #ffd447;
   font-size: 20px;
+}
+
+.brand-mark .bx,
+.footer-brand .brand-mark .bx {
+  font-size: 21px;
 }
 
 .brand-period {
@@ -108,12 +115,24 @@ a {
   background: #6a9c45;
 }
 
+.location-button .location-dot {
+  width: auto;
+  height: auto;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 0;
+  background: transparent;
+  color: #5d8a43;
+  font-size: 15px;
+}
+
 .chevron {
   margin-left: 5px;
   color: #7c857c;
   font-size: 15px;
 }
 
+/* Introduction section: headline, explanation, and community-plan note */
 .intro-row {
   display: flex;
   align-items: flex-end;
@@ -194,6 +213,7 @@ h1 {
   font-size: 11px;
 }
 
+/* Dashboard section: two-column layout for live status and generator planning */
 .dashboard-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.62fr) minmax(285px, 0.88fr);
@@ -211,6 +231,7 @@ h1 {
   gap: 21px;
 }
 
+/* Status card section: visual current-grid state, reason, confidence, and restoration estimate */
 .status-card {
   overflow: hidden;
   padding: 22px 24px 18px;
@@ -369,6 +390,7 @@ h1 {
   font-size: 8px;
 }
 
+/* Community report section: nearby neighborhood cards and approved complaint updates */
 .community-section {
   padding: 3px 1px 0;
 }
@@ -504,6 +526,7 @@ h1 {
   line-height: 1.5;
 }
 
+/* Preparation section: practical household power-planning advice and rotating safety tips */
 .prep-card {
   position: relative;
   overflow: hidden;
@@ -565,6 +588,7 @@ h1 {
   gap: 13px;
 }
 
+/* Generator planner section: usage slider, fuel-cost input, and monthly estimate */
 .planner-card {
   padding: 21px 20px 17px;
   border: 1px solid #e1e2d8;
@@ -793,6 +817,7 @@ h1 {
   color: #465744;
 }
 
+/* Footer section: brand return link, site motto, and Nigeria region marker */
 .footer {
   min-height: 75px;
   display: flex;
@@ -861,6 +886,10 @@ h1 {
   font-weight: 700;
 }
 
+/* About section: describes Current.NG services and provider, report, planner, and safety features */
+.about-section { grid-column: 1 / -1; margin-top: 4px; padding: 34px; border: 1px solid #e1e2d8; border-radius: 11px; background: #fbfaf6; }
+
+/* Outage modal and toast section: fault-report form and transient action feedback */
 .outage-modal {
   position: fixed;
   z-index: 20;
